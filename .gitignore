@@ -1,2 +1,4 @@
 config.json
+temp_chart.png
+*.pdf
 __pycache__/

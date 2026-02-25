@@ -1,0 +1,9 @@
+Datum,Kategorie,Polozka,Castka,Typ
+2024-05-01,Prijem,Vyplata,45000,Prijem
+2024-05-02,Byt,Najem,-15000,Vydaj
+2024-05-03,Potraviny,Nakup Lidl,-1200,Vydaj
+2024-05-05,Doprava,Benzin,-2000,Vydaj
+2024-05-10,Zabava,Kino a vecere,-800,Vydaj
+2024-05-15,Potraviny,Nakup Tesco,-1500,Vydaj
+2024-05-20,Investice,Akcie Apple,-3000,Vydaj
+2024-05-25,Sluzby,Internet a mobil,-600,Vydaj
