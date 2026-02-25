@@ -57,8 +57,32 @@ Vytvořte report: Napište do chatu "Udělej mi report" nebo "Generuj PDF". Nora
 | `Vizualizace`  | Matplotlib  |
 | `Export`  | FPDF2  |
 
+> [!TIP]
+>## 💡 Tipy pro efektivní používání
+>* **Pravidelný export**: Exportujte data ze svého internetového bankovnictví do CSV každý týden, abyste měli s Norou vždy aktuální přehled.
+>* **Stručnost v dotazech**: Nora funguje nejlépe, pokud se ptáte přímo. Např. *"Udělej tabulku mých útrat za dopravu"* místo dlouhého vysvětlování.
+>* **Kategorizace**: Pokud vaše banka nepoužívá kategorie, přidejte si do CSV sloupec `Kategorie` ručně. Nora pak dokáže vytvořit mnohem přesnější grafy v PDF reportu.
+>* **Plánování**: Zkuste se Nory zeptat na simulace: *"Můžu si dovolit dovolenou za 20 000 Kč, když chci měsíčně ušetřit 5 000 Kč?"*
 
-> [!WARNING]
+> [!NOTE]
+>## ❓ Často kladené otázky (Q&A)
+>
+>**Otázka: Proč mi Nora odpovídá anglicky?**
+>*Odpověď:* Nora má v instrukcích nastavenou češtinu. Pokud přesto odpoví anglicky, stačí jí napsat: *"Odpovídej prosím česky"*. U open-source modelů se to občas stává při prvním dotazu.
+>
+>**Otázka: Jsou moje finanční data v bezpečí?**
+>*Odpověď:* Ano. Vaše CSV data se nikam neukládají. Nora je čte pouze do operační paměti vašeho počítače a posílá je jako textový kontext do Hugging Face API pro analýzu. Pokud chcete maximální soukromí, nepoužívejte v CSV reálná jména nebo >čísla účtů.
+>
+>**Otázka: Aplikace mi píše "AI Chyba: 401 Unauthorized". Co s tím?**
+>*Odpověď:* Tato chyba znamená, že váš Hugging Face Token je neplatný nebo špatně zkopírovaný. Zkontrolujte, zda v nastavení aplikace nemáte v tokenu mezeru navíc.
+>
+>**Otázka: Můžu Noru používat úplně offline?**
+>*Odpověď:* Aktuální verze vyžaduje internetové připojení pro komunikaci s modelem Gemma 2. Pro offline běh by bylo nutné upravit kód pro knihovnu `llama-cpp-python` a stáhnout model přímo do vašeho PC.
+>
+>**Otázka: PDF report se nevygeneroval, co se stalo?**
+>*Odpověď:* Ujistěte se, že máte v CSV souboru sloupec `Castka` s číselnými hodnotami a že soubor není právě otevřený v jiném programu (např. v Excelu), což může blokovat přístup.
+
+> [!IMPORTANT]
 ># 🔒 Bezpečnost
 >Vaše data i API klíče zůstávají u vás. Soubor config.json, dočasné grafy a vygenerované PDF reporty jsou automaticky ignorovány Gitem, aby se předešlo jejich nechtěnému nahrání na veřejný server.
 
