@@ -1,1 +1,1 @@
-# Nora_AI_Agent
+# Nora your financial assistant Agent (Nora v.1.0)
