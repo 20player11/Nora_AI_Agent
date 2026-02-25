@@ -1,1 +1,1 @@
-# Nora your financial assistant Agent (Nora v.1.0)
+# Nor, your financial assistant Agent (Nora v.1.0)
