@@ -24,3 +24,5 @@ To maintain the financial integrity of Nora, we follow a strict contribution pip
 
 
 **Note on Security:** If your contribution involves sensitive data handling or authentication, it will undergo an additional security audit before being merged into a stable release.
+
+_Thank you for Contributing!_
