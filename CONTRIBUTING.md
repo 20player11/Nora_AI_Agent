@@ -6,7 +6,7 @@ We welcome contributions that improve Nora’s intelligence, security, and user 
 
 | Category | Supported          |
 | -------- | ------------------ |
-| Core Logic (AI) | :white_check_mark: |
+| Core Logic (AI) | :x: |
 | UI/UX Design    | :white_check_mark: |
 | Financial APIs  | :x: (Internal Only)|
 | Bug Fixes       | :white_check_mark: |
