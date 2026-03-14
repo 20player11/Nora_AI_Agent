@@ -1,0 +1,12 @@
+nora_history.db
+config.json
+nora.log
+nora.ico
+noraAI.spec
+test.csv
+NoraEXE/
+dist/
+build/
+NoraEXE.zip
+__pycache__/
+*.pyc
