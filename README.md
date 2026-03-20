@@ -32,7 +32,7 @@ Získejte token na huggingface.co/settings/tokens.
 
 Spusťte Noru a vložte token do pole v nastavení.
 
-Klikněte na Uložit Nastavení (token se uloží lokálně do config.json).
+Klikněte na Uložit Nastavení (token se uloží **lokálně** do config.json).
 
 📈 Jak Noru používat
 Importujte data: Použijte CSV soubor v následujícím formátu (oddělený čárkou):
