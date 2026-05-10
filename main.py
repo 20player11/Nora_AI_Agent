@@ -75,6 +75,12 @@ class NoraFinanceAI(ctk.CTk):
                                          fg_color=COLORS["accent"], hover_color="#2980b9")
         self.import_btn.pack(pady=10, padx=30)
 
+        # PŘIDÁNO: Tlačítko pro spuštění predikce
+        self.predict_btn = ctk.CTkButton(self.sidebar, text="🔮 PREDIKCE 2026", fg_color="transparent", 
+                                        border_width=1, border_color=COLORS["border"], 
+                                        command=self.run_predictor, corner_radius=12)
+        self.predict_btn.pack(pady=10, padx=30)
+
         self.clear_btn = ctk.CTkButton(self.sidebar, text="🗑️ VYMAZAT HISTORII", fg_color="transparent", 
                                         border_width=1, border_color=COLORS["border"], 
                                         command=self.clear_chat_history, corner_radius=12)
@@ -99,11 +105,22 @@ class NoraFinanceAI(ctk.CTk):
         self.balance_value = ctk.CTkLabel(self.balance_card, text="0.00 Kč", font=("Segoe UI", 26, "bold"))
         self.balance_value.pack(pady=(5, 15))
 
+        # PŘIDÁNO: Karta Predikce
+        self.predict_card = ctk.CTkFrame(self.dashboard, fg_color=COLORS["bg_card"], corner_radius=20)
+        self.predict_card.pack(pady=10, padx=25, fill="x")
+        ctk.CTkLabel(self.predict_card, text="Předpověď (+30 dní)", font=("Segoe UI", 12), text_color=COLORS["text_sub"]).pack(pady=(15, 0))
+        self.predict_value = ctk.CTkLabel(self.predict_card, text="-- Kč", font=("Segoe UI", 20, "bold"))
+        self.predict_value.pack(pady=(5, 15))
+
         # Karta limitu
         self.status_card = ctk.CTkFrame(self.dashboard, fg_color=COLORS["bg_card"], corner_radius=20)
         self.status_card.pack(pady=10, padx=25, fill="x")
         self.status_label = ctk.CTkLabel(self.status_card, text="Limit: --", font=("Segoe UI", 14))
         self.status_label.pack(pady=15)
+
+        # PŘIDÁNO: Vizuální ukazatel Vampire Huntera
+        self.vamp_label = ctk.CTkLabel(self.dashboard, text="Vampire Hunter: Čekám na data...", font=("Segoe UI", 12, "bold"), text_color=COLORS["text_sub"])
+        self.vamp_label.pack(pady=10)
 
         # Tlačítko nastavení
         self.settings_btn = ctk.CTkButton(self.dashboard, text="⚙️ Nastavení", width=120, height=40, 
@@ -124,7 +141,7 @@ class NoraFinanceAI(ctk.CTk):
                                        command=self.send_message, font=("Segoe UI", 14, "bold"))
         self.send_btn.pack(side="right")
 
-    # --- MODERNÍ INTRO 2.0 (OPRAVENÉ) ---
+    # --- MODERNÍ INTRO 2.0 (OPRAVENÉ S RÁMEČKEM) ---
     def show_modern_intro(self):
         self.intro = ctk.CTkToplevel()
         self.intro.geometry("600x400")
@@ -132,15 +149,19 @@ class NoraFinanceAI(ctk.CTk):
         sw, sh = self.intro.winfo_screenwidth(), self.intro.winfo_screenheight()
         self.intro.geometry(f"600x400+{(sw-600)//2}+{(sh-400)//2}")
         
-        self.canvas_intro = tk.Canvas(self.intro, highlightthickness=0, width=600, height=400, bg="white")
-        self.canvas_intro.pack()
+        # PŘIDÁNO: Aby okno nemizelo do prázdna, obalil jsem tvůj canvas rámečkem barvy 'accent'
+        border_frame = ctk.CTkFrame(self.intro, fg_color="#1e90ff", corner_radius=0)
+        border_frame.pack(fill="both", expand=True)
 
-        # Dekorativní grafika
+        self.canvas_intro = tk.Canvas(border_frame, highlightthickness=0, width=596, height=396, bg="white")
+        self.canvas_intro.pack(padx=2, pady=2) # 2 px okraj rámečku
+
+        # Dekorativní grafika (Tvoje původní)
         self.canvas_intro.create_oval(380, -120, 900, 450, fill="#e1f1ff", outline="") 
         self.canvas_intro.create_polygon(320, 400, 600, 0, 600, 400, fill="#1e90ff", outline="") 
         self.canvas_intro.create_polygon(480, 400, 600, 120, 600, 400, fill="#0056b3", outline="")
 
-        # Textové logo (bez letter_spacing, aby to neházelo chybu)
+        # Textové logo (Tvoje původní)
         self.canvas_intro.create_text(253, 163, text="NORA", font=("Arial", 90, "bold"), fill="#f2f2f2")
         self.nora_text = self.canvas_intro.create_text(250, 160, text="NORA", font=("Arial", 90, "bold"), fill="#002d5b")
         self.canvas_intro.create_text(250, 235, text="POWERED BY FINANCIAL AI", font=("Arial", 12, "bold"), fill="#1e90ff")
@@ -152,6 +173,10 @@ class NoraFinanceAI(ctk.CTk):
         self.animate_intro(100)
 
     def animate_intro(self, w):
+        # POJISTKA: Pokud se okno stihlo zavřít, zastav smyčku
+        if not self.intro.winfo_exists():
+            return
+
         if w < 450:
             step = (450 - w) / 18 + 1.2
             new_w = w + step
@@ -161,9 +186,14 @@ class NoraFinanceAI(ctk.CTk):
             self.intro.after(800, self.finish_intro)
 
     def finish_intro(self):
-        self.intro.destroy()
-        self.deiconify()
-        self.load_history_into_chat()
+        # POJISTKA: Zničí intro jen pokud ještě existuje
+        if self.intro.winfo_exists():
+            self.intro.destroy()
+            
+        # POJISTKA: Zobrazí hlavní okno jen pokud se mezitím nezavřela celá appka
+        if self.winfo_exists():
+            self.deiconify()
+            self.load_history_into_chat()
 
     # --- NASTAVENÍ A KONFIGURACE ---
     def open_settings(self):
@@ -265,6 +295,23 @@ class NoraFinanceAI(ctk.CTk):
             except Exception as e:
                 messagebox.showerror("Chyba", f"Chyba při zpracování: {e}")
 
+    # PŘIDÁNO: Nová funkce pro predikci 2026
+    def run_predictor(self):
+        if self.df is None or self.df.empty:
+            messagebox.showwarning("Nora AI", "Nejdříve importuj data!")
+            return
+        
+        # Jednoduchý výpočet průměrného denního výdaje
+        expenses = self.df[self.df['Castka'] < 0]['Castka'].sum()
+        avg_daily = abs(expenses) / 30
+        
+        current_bal = self.df['Castka'].sum()
+        future_30d = current_bal - (avg_daily * 30)
+        
+        # Zápis do UI a do chatu
+        self.predict_value.configure(text=f"{future_30d:,.2f} Kč".replace(',', ' '), text_color=COLORS["accent"])
+        self.add_to_chat("Nora", f"🔮 **Predikce:** Pokud budeš dál takto utrácet, zůstatek za 30 dní bude cca {future_30d:,.0f} Kč.")
+
     def vampire_hunter(self):
         keywords = ["netflix", "spotify", "hbo", "disney", "apple", "google", "o2", "t-mobile", "vodafone", "cez", "eon", "najem", "pojisteni"]
         found = []
@@ -275,8 +322,14 @@ class NoraFinanceAI(ctk.CTk):
                     found.append(f"• {row.get('Popis')} ({abs(row['Castka'])} Kč)")
         
         if found:
-            unique_vamps = "\n".join(list(set(found))[:10])
+            unique_vamps_list = list(set(found))
+            unique_vamps = "\n".join(unique_vamps_list[:10])
+            
+            # PŘIDÁNO: Změna barvy nového štítku v dashboardu
+            self.vamp_label.configure(text=f"Vampire Hunter: {len(unique_vamps_list)} detekováno!", text_color=COLORS["danger"])
             self.add_to_chat("Nora", f"🔍 **Vampire Hunter Analýza:**\nIdentifikovala jsem tyto fixní výdaje:\n{unique_vamps}")
+        else:
+            self.vamp_label.configure(text="Vampire Hunter: Čisté", text_color=COLORS["success"])
 
     def update_dashboard(self):
         if self.df is None: return

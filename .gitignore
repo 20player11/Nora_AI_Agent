@@ -8,6 +8,7 @@ NoraEXE/
 dist/
 build/
 NoraEXE.zip
+main2.py
 NOTGITHUB/
 __pycache__/
 *.pyc
